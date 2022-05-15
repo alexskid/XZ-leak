@@ -1,7 +1,7 @@
 # XZ-leak
 Кирик) - toxic guy
-Him swear me
-Status of the crashes :
+Him swear me 
+# Status of the crashes :
   WRD post - ✅
   Website - ✅
   Script - ✅
