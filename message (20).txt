@@ -1,0 +1,172 @@
+getgenv().collectHoopsToggle = false
+getgenv().collectOrbsToggle = false
+getgenv().autoRebirth = false
+
+getgenv().crystaltoggle = false
+getgenv().eggtoggle = false
+
+getgenv().cityorb = false
+getgenv().snoworb = false
+getgenv().magmaorb = false
+getgenv().legendsorb = false
+
+local selectcity
+local playerpart = game.Players.LocalPlayer.Character.Head
+local plyr = game.Players.LocalPlayer
+
+function collectHoopsToggle() -- Auto Collects Hoops
+    spawn(function()
+        local playerHead = game.Players.LocalPlayer.Character.Head
+        while wait() do
+            if not getgenv().collectHoopsToggle then break end
+            for i, v in pairs(game:GetService("Workspace").Hoops:GetDescendants()) do
+                if v.Name == "TouchInterest" and v.Parent then
+                    -- Fire the Touch Interest
+                    firetouchinterest(playerHead, v.Parent, 0)
+                    wait(0.01)
+                    firetouchinterest(playerHead, v.Parent, 1)
+                end
+            end 
+        end
+    end)
+end
+
+function collectOrbsToggle() -- Auto Collects Orbs
+    spawn(function()
+        local playerHead = game.Players.LocalPlayer.Character.Head
+        while wait() do
+            if not getgenv().collectOrbsToggle then break end
+            for i, v in pairs(game:GetService("Workspace").orbFolder:GetDescendants()) do
+                if v.Name == "TouchInterest" and v.Parent then
+                    -- Fire the Touch Interest
+                    firetouchinterest(playerHead, v.Parent, 1)
+                    wait(0.1)
+                    firetouchinterest(playerHead, v.Parent, 0)
+                end
+            end
+        end
+    end)
+end
+
+function autoRebirth()
+    spawn(function() 
+        while wait(5) do
+            if not getgenv().autoRebirth then break end
+            local args = {[1] = "rebirthRequest"}
+            game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer(unpack(args))
+         end
+    end)
+end
+
+spawn(function() -- Anti AFK
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end) 
+end)
+
+function openegg()
+    while wait() do
+        if not eggtoggle then break end
+        game:GetService('VirtualInputManager'):SendKeyEvent(true,"E",false,uwu)
+        wait(1)
+    end
+end
+
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("Speed Legends - Xz Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local autofarm = win:Tab("Autofarm")
+local hubsettings = win:Tab("Settings")
+
+
+
+
+
+
+
+autofarm:Toggle("Auto Hoops",false, function(bool)
+    getgenv().collectHoopsToggle = bool
+    if bool then
+        collectHoopsToggle()
+    end
+end)
+
+
+autofarm:Toggle("Auto Collect Orbs",false, function(bool)
+    getgenv().collectOrbsToggle = bool
+    if bool then
+        collectOrbsToggle()
+    end
+end)
+
+autofarm:Toggle("Auto Rebirth",false, function(bool)
+    getgenv().autoRebirth = bool
+    if bool then
+        autoRebirth()
+    end
+end)
+
+autofarm:Toggle("Auto Open Eggs",false, function(bool)
+    eggtoggle = bool
+    if bool then
+        openegg()
+    end
+end)
+
+autofarm:Dropdown("Select Crystals",{"Red Crystal","Blue Crystal","Purple Crystal","Lightning Crystal","Snow Crystal","Inferno Crystal","Lava Crystal","Yellow Crystal","Electro Legends Crystal"}, function(crystal)
+    if crystal == "Red Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-649.761902, 19.3482361, 252.012131, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+
+    elseif crystal == "Blue Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-576.095459, 19.2482319, 494.060364, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+
+    elseif crystal == "Purple Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-436.18277, 19.2482262, 196.794327, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+
+    elseif crystal == "Lightning Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(374.724884, 80.0482254, 18.0286388, -0.140223026, 0, -0.990119934, 0, 1, 0, 0.990119934, 0, -0.140223026)
+
+    elseif crystal == "Snow Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-334.527588, 19.2482338, 2249.50732, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+
+    elseif crystal == "Inferno Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1741.52026, 18.9312248, 4014.44263, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+
+    elseif crystal == "Lava Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2224.26392, 18.9312248, 4436.81836, 0.939340293, -0, -0.342986584, 0, 1, -0, 0.342986584, 0, 0.939340293)
+
+    elseif crystal == "Yellow Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-300.495819, 19.2482319, -376.939667, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+
+    elseif crystal == "Electro Legends Crystal" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4549.70947, 89.8531113, 6405.38721, 0.000956773758, -0.0325293839, 0.999470294, -4.54802066e-05, 0.99947077, 0.0325294435, -0.999999464, -7.65807927e-05, 0.000954806805)
+
+    end
+end)
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999, Kenaii#6363")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")

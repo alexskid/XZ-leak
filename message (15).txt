@@ -1,0 +1,59 @@
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("XZ Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local tab = win:Tab("Main")
+
+tab:Button("inf res.", function()
+    local Convertables = require(game:GetService("ReplicatedStorage").PlayerData.InitialPlayerData)
+    local Player = game.Players.LocalPlayer
+    
+    for i = 1,50 do
+    wait()
+        for _,v in pairs(workspace['Star_'..Player.Name].Player.Land:GetDescendants()) do
+            spawn(function()
+                if string.find(v.Name,'Ore_') or string.find(v.Name,'Tree_')  then
+                    for _,v2 in pairs(v:GetChildren()) do
+                        game:GetService("ReplicatedStorage").Attack.UpdateHPEvent:FireServer(v2,'Axe')
+                    end
+                end
+            end)
+        end
+    end
+    
+    for _,v in pairs(Convertables.Conversion) do
+        game:GetService("ReplicatedStorage").Resources.Conversion:InvokeServer(_,"2000")
+        game:GetService("ReplicatedStorage").Resources.BuildingRemo:InvokeServer(_,2000)
+    end
+end)
+
+
+
+
+
+
+local hubsettings = win:Tab("Hub")
+
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999")
+    print("Coders: Kl1zyy#0666, Brizzy#9999")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")

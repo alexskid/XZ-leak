@@ -1,0 +1,156 @@
+
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("Xz Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+
+local status = "Working succesfuly! - ping 90ms"
+local S = win:Tab("Main")
+
+S:Button("Check hub status", function()
+lib:Notification("Notification", status, "okay")
+end)
+
+
+S:Button("inf. values", function()
+    game:GetService("Players").LocalPlayer.values.Cash.Value = 1e+40
+    game:GetService("Players").LocalPlayer.values.Views.Value = 1e+40
+    game:GetService("Players").LocalPlayer.values.Subscribers.Value = 1e+40
+    game:GetService("Players").LocalPlayer.values.MaxEnergy.Value = 1e+40
+    game:GetService("Players").LocalPlayer.values.Energy.Value = 1e+40
+end)
+
+S:Button("best upgrades", function()
+    game.ReplicatedStorage.UpgradeEquip:FireServer("Super Cozy Cushion")
+    game.ReplicatedStorage.UpgradeEquip:FireServer("Trigon Computer")
+    game.ReplicatedStorage.UpgradeEquip:FireServer("UFO Camera")
+    game.ReplicatedStorage.UpgradeEquip:FireServer("Tesla Monitor")
+end)
+
+
+
+S:Button("all gamepasses", function()
+    game.Players.LocalPlayer.UserId = "67017770"
+end)
+
+
+local hubsettings = win:Tab("Hub")
+
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999")
+    print("Coders: Kl1zyy#0666, Brizzy#9999")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+
+
+local misctab = win:Tab("Misc")
+
+
+
+
+
+
+misctab:Slider("Set walkspeed",16,100,16, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+misctab:Slider("Set JumpPower",50,1000,50, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
+
+misctab:Slider("Set health",10,1000000,10, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+local Player = game.Players.LocalPlayer
+local Character = Player.Character
+local Humanoid = Character.Humanoid
+ 
+Humanoid.MaxHealth = t
+Humanoid.Health = Humanoid.MaxHealth / 2
+ 
+Humanoid.HealthChanged:connect(function()
+    if Humanoid.Health < 10 then
+        Humanoid.Health = Humanoid.MaxHealth
+    end
+end)
+end)
+
+misctab:Button("BTools", function()
+    a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    a.BinType = 2
+    b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    b.BinType = 3
+    c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    c.BinType = 4
+    end)
+
+misctab:Button("Anti-Cheat", function()
+    local reg = getreg()
+     
+        for i, Function in next, reg do
+            if type(Function) == 'function' then
+                local info = getinfo(Function)
+     
+                if info.name == 'kick' then
+                    if (hookfunction(info.func, function(...)end)) then
+                        print'succesfully hooked kick'
+                    else
+                        print'failed to hook kick'
+                    end
+                end
+            end
+        end
+        local playerscripts = game:GetService'Players'.LocalPlayer.PlayerScripts
+     
+        local script1 = playerscripts.LocalScript
+        local script2 = playerscripts.LocalScript2
+     
+        local script1signal = script1.Changed
+        local script2signal = script2.Changed
+     
+        for i, connection in next, getconnections(script1signal) do
+            connection:Disable()
+        end
+        for i, connection in next, getconnections(script2signal) do
+            connection:Disable()
+        end
+     
+        script1:Destroy()
+        script2:Destroy()
+end)
+
+misctab:Button("Reset Walk and Jump", function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end)
+
+misctab:Button("Anti-Lag (have bugs!)", function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/eVHmQQvQ'))()
+end)
+
+misctab:Button("Anti-Afk",function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+       vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+       wait(1)
+       vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end)
+
