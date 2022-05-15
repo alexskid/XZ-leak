@@ -6,4 +6,5 @@ Him swear me
   Website - ✅
   Script - ✅
   Other sites - ❌
-You are to bad Кирик)
+  Exploit - ❌
+  Keysystem - ❌
