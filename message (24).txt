@@ -1,0 +1,138 @@
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("Lucky Block Battlegrounds - Xz Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local maintab = win:Tab("Main")
+local misctab = win:Tab("Misc")
+local hubsettings = win:Tab("Settings")
+
+maintab:Button("Open Normal Lucky Block (1x)", function()
+game.ReplicatedStorage.SpawnLuckyBlock:FireServer()
+end)
+
+maintab:Button("Open Super Lucky Block (1x)", function()
+game.ReplicatedStorage.SpawnSuperBlock:FireServer()
+end)
+
+maintab:Button("Open Diamond Block (1x)", function()
+game.ReplicatedStorage.SpawnDiamondBlock:FireServer()
+end)
+
+maintab:Button("Open Rainbow Block (1x)", function()
+game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+end)
+
+maintab:Button("Open Galaxy Block (1x)", function()
+game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end)
+
+
+maintab:Button("Open Galaxy Block (100x)", function()
+for i = 1,100 do 
+game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end
+end)
+
+
+misctab:Slider("Set walkspeed",16,100,16, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+misctab:Slider("Set JumpPower",50,1000,50, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
+
+misctab:Toggle("Noclip",false, function(t)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LegoHacker1337/legohacks/main/PhysicsServiceOnClient.lua"))()
+        setfflag("HumanoidParallelRemoveNoPhysics", "False")
+        setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+        if t == true then
+            game:GetService('RunService'):BindToRenderStep("crash", 0 , function()
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end)
+	    elseif t == false then
+            game:GetService('RunService'):UnbindFromRenderStep("crash")
+        end
+end)
+
+misctab:Button("BTools", function()
+    a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    a.BinType = 2
+    b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    b.BinType = 3
+    c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    c.BinType = 4
+    end)
+
+misctab:Button("Anti-Cheat", function()
+    local reg = getreg()
+     
+        for i, Function in next, reg do
+            if type(Function) == 'function' then
+                local info = getinfo(Function)
+     
+                if info.name == 'kick' then
+                    if (hookfunction(info.func, function(...)end)) then
+                        print'succesfully hooked kick'
+                    else
+                        print'failed to hook kick'
+                    end
+                end
+            end
+        end
+        local playerscripts = game:GetService'Players'.LocalPlayer.PlayerScripts
+     
+        local script1 = playerscripts.LocalScript
+        local script2 = playerscripts.LocalScript2
+     
+        local script1signal = script1.Changed
+        local script2signal = script2.Changed
+     
+        for i, connection in next, getconnections(script1signal) do
+            connection:Disable()
+        end
+        for i, connection in next, getconnections(script2signal) do
+            connection:Disable()
+        end
+     
+        script1:Destroy()
+        script2:Destroy()
+end)
+
+
+
+misctab:Button("Anti-Afk",function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+       vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+       wait(1)
+       vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end)
+
+
+
+
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999, Kenaii#6363")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")

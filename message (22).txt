@@ -1,0 +1,384 @@
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+local Meta = getrawmetatable(game)
+local NewIndex = Meta.__newindex
+setreadonly(Meta, false)
+
+Meta.__newindex = newcclosure(function(t, k, ...)
+    
+   if not checkcaller() and (k == "WalkSpeed" or k == "JumpPower") then
+       return
+   end
+   NewIndex(t, k, ...)
+end)
+setreadonly(Meta, true)
+
+
+local PetsLister ={"Blue Crystal", "Enchanted Crystal",
+ "Astral Crystal", "Golden Crystal",
+ "Inferno Crystal", "Space Crystal",
+ "Eternal Crystal", "Thunder Crystal",
+ "Secret Blades Crystal",}
+
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("Ninja Legends - Xz Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local maintab = win:Tab("Main")
+local autofarm = win:Tab("Autofarm")
+local misctab = win:Tab("Misc")
+local hubsettings = win:Tab("Settings")
+
+maintab:Button("Get All Elements", function()
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Eternity Storm")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Shadowfire")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Electral Chaos")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Masterful Wrath")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Shadow Charge")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Frost")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Lightning")
+
+game:GetService("ReplicatedStorage").rEvents.elementMasteryEvent:FireServer("Inferno")
+end)
+
+maintab:Button("Unlock Every Island", function()
+for _,v in pairs(game:GetService("Workspace").islandUnlockParts:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) 
+wait()
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) 
+end
+end
+end)
+
+
+maintab:Toggle("Auto Accept Trades",false, function(State)
+deku0 = State
+while deku0 do wait()
+game:GetService("ReplicatedStorage").rEvents.tradingEvent:FireServer("acceptTrade")
+end 
+end)
+
+
+
+
+
+autofarm:Toggle("Auto-Swing (Need to Equip sword)",false, function(State)
+swing = State
+while swing do wait()
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("swingKatana")
+end
+end)
+
+
+autofarm:Toggle("Auto-Sell",false, function(State)
+Sell = State
+game:GetService('RunService').RenderStepped:connect(function()
+if Sell then
+for _,v in pairs(game:GetService("Workspace").sellAreaCircles.sellAreaCircle16:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) 
+wait()
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) 
+end
+end
+end
+end) 
+end)
+
+autofarm:Toggle("Auto Buy Swords",false, function(State)
+sword = State
+while sword do
+wait(0.5)
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyAllSwords","Inner Peace Island")
+
+end
+end)
+
+
+autofarm:Toggle("Auto Buy Belts",false, function(State)
+sword = State
+while sword do
+wait(0.5)
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyAllBelts","Inner Peace Island")
+end
+end)
+
+
+autofarm:Toggle("Auto Buy Ranks",false, function(State)
+Ranks = State
+while Ranks do
+wait(1)
+local deku1 = "buyRank"
+local deku2 = {"Rookie", "Grasshopper", "Apprentice", "Samurai", "Assassin", "Shadow", "Ninja", "Master Ninja", "Sensei", "Master Sensei", "Ninja Legend", "Master Of Shadows", "Immortal Assassin", "Eternity Hunter", "Shadow Legend", "Dragon Warrior", "Dragon Master", "Chaos Sensei", "Chaos Legend", "Master Of Elements"
+, "Elemental Legend", "Ancient Battle Master", "Ancient Battle Legend", "Legendary Shadow Duelist", "Master Legend Assassin", "Mythic Shadowmaster", "Legendary Shadowmaster", "Awakened Scythemaster", "Awakened Scythe Legend", "Master Legend Zephyr", "Golden Sun Shuriken Master", "Golden Sun Shuriken Legend", "Dark Sun Samurai Legend", "Dragon Evolution Form I", "Dragon Evolution Form II", "Dragon Evolution Form III", "Dragon Evolution Form IV",
+"Dragon Evolution Form V", "Cybernetic Electro Master", "Cybernetic Electro Legend", "Shadow Chaos Assassin", "Shadow Chaos Legend", "Infinity Sensei", "Infinity Legend", "Aether Genesis Master Ninja", "Master Legend Sensei Hunter", "Skystorm Series Samurai Legend", "Master Elemental Hero", "Eclipse Series Soul Master",
+"Starstrike Master Sensei", "Evolved Series Master Ninja", "Dark Elements Guardian", "Elite Series Master Legend", "Infinity Shadows Master", "Lightning Storm Sensei", "Dark Elements Blademaster", "Rising Shadow Eternal Ninja", "Skyblade Ninja Master", "Shadow Storm Sensei", }
+    
+for i = 1, #deku2 do
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(deku1, deku2[i])
+end
+end
+end)
+
+autofarm:Toggle("Teleport to Spawned Items",false, function(State)
+dek3 = State
+while dek3 do wait(0.5)
+for i,v in pairs(game:GetService("Workspace").spawnedCoins:GetDescendants()) do
+if v:IsA("Part") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+end 
+end 
+end
+end)
+
+
+
+autofarm:Toggle("Auto-Hoop",false, function(State)
+dekui = State
+while dekui do wait(2)
+for _,v in pairs(game:GetService("Workspace").Hoops:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) 
+wait()
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) 
+end
+end
+end
+end)
+
+
+autofarm:Dropdown("Select Egg",PetsLister, function(Selected)
+PetsLister = Selected 
+end)
+
+autofarm:Toggle("Auto Open Crystal",false, function(State)
+pets = State
+while pets do wait() 
+game:GetService("ReplicatedStorage").rEvents.openCrystalRemote:InvokeServer("openCrystal",PetsLister)
+end
+end)
+
+
+autofarm:Button("Collect Every Chest", function()
+local chest1 = {"Magma Chest", "Enchanted Chest", "Golden Chest", "Mythical Chest", "Legends Chest",
+"Daily Chest", "Eternal Chest", "Sahara Chest", "Thunder Chest",
+"Ancient Chest", "Midnight Shadow Chest", "Wonder Chest", "Golden Zen Chest", "Ultra Ninjitsu Chest",
+"Skystorm Masters Chest", "Chaos Legends Chest", "Soul Fusion Chest",}
+for i = 1, #chest1 do
+wait(2)
+game:GetService("ReplicatedStorage").rEvents.checkChestRemote:InvokeServer(chest1[i])
+end
+end)
+
+autofarm:Label("-Boss Autofarms (Equip Sword To Hit)")
+
+autofarm:Toggle("Eternal Boss",false, function(State)
+wait1 = State
+game:GetService('RunService').Stepped:connect(function()
+pcall(function()
+if wait1 then
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("swingKatana")
+game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+for i,v in pairs(game:GetService("Workspace").bossFolder.EternalBoss:GetDescendants()) do
+if v:IsA("Part")  and v.Name ~= "HumanoidRootPart" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+end
+end 
+end 
+end)  
+end)  
+end)
+
+
+autofarm:Toggle("Ancient Magma Boss",false, function(State)
+wait2 = State
+game:GetService('RunService').Stepped:connect(function()
+pcall(function()
+if wait2 then
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("swingKatana")
+game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+for i,v in pairs(game:GetService("Workspace").bossFolder.AncientMagmaBoss:GetDescendants()) do
+if v:IsA("Part")  and v.Name ~= "HumanoidRootPart" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+end
+end 
+end 
+end) 
+end) 
+end)
+
+
+autofarm:Toggle("Robot Boss",false, function(State)
+wait3 = State
+game:GetService('RunService').Stepped:connect(function()
+pcall(function()
+if wait3 then
+game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("swingKatana")
+game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+for i,v in pairs(game:GetService("Workspace").bossFolder.RobotBoss:GetDescendants()) do
+if v:IsA("Part")  and v.Name ~= "HumanoidRootPart" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+end
+end 
+end 
+end)  
+end)  
+end)
+
+autofarm:Label("-Auto Hills")
+
+autofarm:Toggle("Auto King",false, function(State)
+king = State
+while king do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(227.338928, 89.7980499, -269.710724) 
+end 
+end)
+
+autofarm:Toggle("Waters",false, function(State)
+king1 = State
+while king1 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(348.497192, 8824.53809, 116.114471) end end)
+
+autofarm:Toggle("Tornado",false, function(State)
+king2 = State
+while king2 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(357.979034, 30383.0957, -11.4244452) end end)
+
+autofarm:Toggle("Zen Masters Blade",false, function(State)
+king3 = State
+while king3 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5012.94189, 38.704483, 1598.98865) end end)
+
+autofarm:Toggle("Lava pit",false, function(State)
+king4 = State
+while king4 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-123.827347, 12952.5381, 268.688446) end end)
+
+autofarm:Toggle("Sand Tornado",false, function(State)
+king5 = State
+while king5 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(321.561523, 16872.0938, -12.2127075) end end)
+
+autofarm:Toggle("Swords Of Ancient",false, function(State)
+king6 = State
+while king6 do wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(623.643677, 53.273613, 2433.99438) end end)
+
+
+
+
+
+
+misctab:Slider("Set walkspeed",16,100,16, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+misctab:Slider("Set JumpPower",50,1000,50, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
+
+misctab:Toggle("Noclip",false, function(t)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LegoHacker1337/legohacks/main/PhysicsServiceOnClient.lua"))()
+        setfflag("HumanoidParallelRemoveNoPhysics", "False")
+        setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+        if t == true then
+            game:GetService('RunService'):BindToRenderStep("crash", 0 , function()
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end)
+	    elseif t == false then
+            game:GetService('RunService'):UnbindFromRenderStep("crash")
+        end
+end)
+
+misctab:Button("BTools", function()
+    a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    a.BinType = 2
+    b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    b.BinType = 3
+    c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    c.BinType = 4
+    end)
+
+misctab:Button("Anti-Cheat", function()
+    local reg = getreg()
+     
+        for i, Function in next, reg do
+            if type(Function) == 'function' then
+                local info = getinfo(Function)
+     
+                if info.name == 'kick' then
+                    if (hookfunction(info.func, function(...)end)) then
+                        print'succesfully hooked kick'
+                    else
+                        print'failed to hook kick'
+                    end
+                end
+            end
+        end
+        local playerscripts = game:GetService'Players'.LocalPlayer.PlayerScripts
+     
+        local script1 = playerscripts.LocalScript
+        local script2 = playerscripts.LocalScript2
+     
+        local script1signal = script1.Changed
+        local script2signal = script2.Changed
+     
+        for i, connection in next, getconnections(script1signal) do
+            connection:Disable()
+        end
+        for i, connection in next, getconnections(script2signal) do
+            connection:Disable()
+        end
+     
+        script1:Destroy()
+        script2:Destroy()
+end)
+
+
+
+misctab:Button("Anti-Afk",function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+       vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+       wait(1)
+       vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end)
+
+
+
+
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999, Kenaii#6363")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")

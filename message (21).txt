@@ -1,0 +1,331 @@
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("XZ Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local maintab = win:Tab("Main")
+local combattab = win:Tab("Combat")
+local target = win:Tab("Target")
+local teleport = win:Tab("Teleports")
+local hubsettings = win:Tab("Hub")
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+local TargetN = "None"
+
+
+target:Textbox("Target Name (Not Display)",true, function(value)
+    for _, v in pairs(game:GetService("Players"):GetChildren()) do
+        if (string.sub(string.lower(v.Name), 1, string.len(value))) == string.lower(value) then
+            TargetN = v.Name
+        end
+    end
+        spawn(function()
+wait(0.5)
+game.StarterGui:SetCore("SendNotification", {
+Title = "Current Target"; 
+Text = TargetN; 
+Icon = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" .. TargetN; 
+Duration = 5; 
+})
+            end)
+end)
+
+target:Button("Go To", function()
+	game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Players")[TargetN].Character.HumanoidRootPart.CFrame
+end)
+
+
+target:Toggle("Spectate",false, function(spec)
+    if spec == true then
+game:GetService("Workspace"):FindFirstChild("Camera").CameraSubject = game:GetService("Players")[TargetN].Character:FindFirstChildOfClass("Humanoid")
+    elseif spec == false then
+game:GetService("Workspace"):FindFirstChild("Camera").CameraSubject = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+end	
+end)
+
+target:Button("Target Info", function()
+   	game.StarterGui:SetCore("SendNotification", {Title = "System", Text = "Press F9 and scroll down to find users info!", Duration = 15, Button1 = "Okay"})
+	print("------------------")
+	print(""..game:GetService("Players")[TargetN].Name.." Backpack:")
+	for i, v in pairs(game:GetService("Players")[TargetN].Backpack:GetDescendants()) do
+		if v:IsA("Tool") then
+			print(""..v.Name.."")
+		end
+	end
+	print("------------------")
+	print(""..game:GetService("Players")[TargetN].Name.." | Information:")
+	print("Account Age: "..game:GetService("Players")[TargetN].AccountAge.." Days")
+	print("User ID: "..game:GetService("Players")[TargetN].UserId)
+	print("Shirt Template: "..game:GetService("Players")[TargetN].Character.Shirt.ShirtTemplate)
+	print("Pants Template: "..game:GetService("Players")[TargetN].Character.Pants.PantsTemplate)
+	print("------------------")
+end)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+combattab:Button("Arrest all criminals (Works in every team)", function()
+local Player = game.Players.LocalPlayer
+local cpos = Player.Character.HumanoidRootPart.CFrame
+for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+if v.Name ~= Player.Name then
+local i = 10
+  repeat
+  wait()
+  i = i-1
+  game.Workspace.Remote.arrest:InvokeServer(v.Character.HumanoidRootPart)
+  Player.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+  until i == 0
+end
+end
+Player.Character.HumanoidRootPart.CFrame = cpos
+end)
+
+combattab:Button("Neutral Team", function()
+   workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+end)
+
+
+
+combattab:Button("Prisoner Team", function()
+workspace.Remote.TeamEvent:FireServer("Bright orange")
+end)
+
+
+combattab:Button("Remove Doors", function()
+	game:GetService("Workspace").Doors:Destroy()
+end)
+
+combattab:Button("Get Guns (No Gamepass)", function()
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver.M9.ITEMPICKUP)
+end)
+
+combattab:Button("Get Guns (Gamepass)", function()
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver["Riot Shield"].ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver.M9.ITEMPICKUP)
+    Workspace.Remote.ItemHandler:InvokeServer(Workspace.Prison_ITEMS.giver.M4A1.ITEMPICKUP)
+end)
+
+
+combattab:Button("Super Punch (F)", function()
+mainRemotes = game.ReplicatedStorage
+meleeRemote = mainRemotes['meleeEvent']
+mouse = game.Players.LocalPlayer:GetMouse()
+punching = false
+cooldown = false
+function punch()
+cooldown = true
+local part = Instance.new("Part", game.Players.LocalPlayer.Character)
+part.Transparency = 1
+part.Size = Vector3.new(5, 2, 3)
+part.CanCollide = false
+local w1 = Instance.new("Weld", part)
+w1.Part0 = game.Players.LocalPlayer.Character.Torso
+w1.Part1 = part
+w1.C1 = CFrame.new(0,0,2)
+part.Touched:connect(function(hit)
+if game.Players:FindFirstChild(hit.Parent.Name) then
+local plr = game.Players:FindFirstChild(hit.Parent.Name)
+if plr.Name ~= game.Players.LocalPlayer.Name then part:Destroy() for i = 1,100 do
+meleeRemote:FireServer(plr) end end end end)
+wait(1)
+cooldown = false
+part:Destroy()
+end
+mouse.KeyDown:connect(function(key)
+if cooldown == false then
+if key:lower() == "f" then
+punch()
+end
+end
+end)
+end)
+
+
+
+
+combattab:Button("Gun Mod", function()
+pcall(function()
+	for i, v in pairs(player.Backpack:children()) do 
+	local gunstates = v:findFirstChild("GunStates")
+		if gunstates then 
+			local module = require(gunstates)
+			module.Bullets = 10
+			module.Spread = 0
+			module.CurrentAmmo = 999
+			module.StoredAmmo = 9999
+			module.AutoFire = true
+			module.Range = 10000
+			module.FireRate = 0.001
+			module.MaxAmmo = 999
+			module.Damage = 100
+		end
+end
+
+for i, v in pairs(player.Character:children()) do 
+	local gunstates = v:findFirstChild("GunStates")
+	if gunstates then 
+		local module = require(gunstates)
+		module.Bullets = 100
+		module.Spread = 0
+		module.CurrentAmmo = 999
+		module.StoredAmmo = 9999
+		module.AutoFire = true
+		module.Range = 10000
+		module.FireRate = 0.00001
+		module.MaxAmmo = 999
+	end
+end
+end)
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------
+----------------------------------------------
+
+
+maintab:Slider("Set walkspeed",16,100,16, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+maintab:Slider("Set JumpPower",50,1000,50, function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
+
+maintab:Toggle("Noclip",false, function(t)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LegoHacker1337/legohacks/main/PhysicsServiceOnClient.lua"))()
+        setfflag("HumanoidParallelRemoveNoPhysics", "False")
+        setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+        if t == true then
+            game:GetService('RunService'):BindToRenderStep("crash", 0 , function()
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end)
+	    elseif t == false then
+            game:GetService('RunService'):UnbindFromRenderStep("crash")
+        end
+end)
+
+maintab:Button("Respawn", function()
+game.Workspace.Remote.loadchar:InvokeServer(game.Players:GetChildren())
+end)
+
+maintab:Button("BTools", function()
+    a = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    a.BinType = 2
+    b = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    b.BinType = 3
+    c = Instance.new("HopperBin", game.Players.LocalPlayer.Backpack)
+    c.BinType = 4
+    end)
+
+maintab:Button("Anti-Cheat", function()
+    local reg = getreg()
+     
+        for i, Function in next, reg do
+            if type(Function) == 'function' then
+                local info = getinfo(Function)
+     
+                if info.name == 'kick' then
+                    if (hookfunction(info.func, function(...)end)) then
+                        print'succesfully hooked kick'
+                    else
+                        print'failed to hook kick'
+                    end
+                end
+            end
+        end
+        local playerscripts = game:GetService'Players'.LocalPlayer.PlayerScripts
+     
+        local script1 = playerscripts.LocalScript
+        local script2 = playerscripts.LocalScript2
+     
+        local script1signal = script1.Changed
+        local script2signal = script2.Changed
+     
+        for i, connection in next, getconnections(script1signal) do
+            connection:Disable()
+        end
+        for i, connection in next, getconnections(script2signal) do
+            connection:Disable()
+        end
+     
+        script1:Destroy()
+        script2:Destroy()
+end)
+
+
+
+maintab:Button("Anti-Afk",function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+       vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+       wait(1)
+       vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end)
+
+
+
+
+
+teleport:Button("Prison",function()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(846.502197, 102.460556, 2358.45654)
+end)
+
+teleport:Button("Criminal Base",function()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-904.30481, 105.855263, 2070.95117)
+end)
+
+teleport:Button("Yard",function()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(790.503235, 103.46212, 2459.52905)
+end)
+
+
+teleport:Button("Escape Prison",function()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(566.152283, 107.398636, 2232.87817)
+end)
+
+
+teleport:Button("Guard Spawn",function()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(831.733032, 105.600052, 2316.95923)
+end)
+
+
+hubsettings:Label("Settings")
+hubsettings:Label("Toggle hub: RightControl")
+
+hubsettings:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+hubsettings:Label("Credits")
+hubsettings:Button("copy discord link", function()
+    lib:Notification("Notification", "Link copied to clipboard! Ctrl + V for paste link", "Okay!")
+end)
+hubsettings:Button("print credits", function()
+    lib:Notification("Notification", "Check logs - F9", "Okay!")
+    print("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+    print("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999, Kenaii#6363")
+    print("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
+end)
+hubsettings:Label("Owners: Kl1zyy#0666, Brizzy#9999, Kenaii#6363")
+hubsettings:Label("Coders: Kl1zyy#0666, Brizzy#9999, Kenaii#6363 ")
+hubsettings:Label("Testers: Kl1zyy#0666, [XZ] Happy Gamer#6735 , Brizzy#9999")
+hubsettings:Label("Managers: [XZ] Happy Gamer#6735, Кирик)#0324")
